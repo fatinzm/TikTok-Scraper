@@ -1,6 +1,6 @@
 # TikTok Video Validator Backend
 
-This project downloads the 5 most recent (non-pinned) TikTok videos for any username and serves them via a FastAPI backend.
+This project downloads the 5 most recent (including pinned) TikTok videos for any username and serves them via a FastAPI backend.
 
 ## Features
 - Uses undetected_chromedriver to bypass bot detection
