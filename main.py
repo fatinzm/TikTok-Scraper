@@ -34,8 +34,15 @@ class DownloadRequest(BaseModel):
 @app.post("/download")
 def download_videos(request: DownloadRequest):
     try:
+        # Delete old videos
+        old_videos = glob.glob("downloads/*.mp4")
+        for f in old_videos:
+            os.remove(f)
+
+        # Download new videos
         download_latest_tiktok_videos(request.username)
-        
+
+        # Get last 5 new videos
         video_files = sorted(
             glob.glob(f"downloads/{request.username}_video_*.mp4"),
             key=os.path.getmtime,
@@ -45,6 +52,6 @@ def download_videos(request: DownloadRequest):
         video_urls = [f"/static/{os.path.basename(f)}" for f in video_files]
         return {"status": "success", "video_urls": video_urls}
     except Exception as e:
-        print("ERROR:", str(e))
-        traceback.print_exc()  # 🔍 This will print full traceback
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
